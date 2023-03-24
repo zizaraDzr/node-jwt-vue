@@ -15,21 +15,21 @@
 import express from 'express';
 import cors from 'cors';
 import cookieparser from 'cookie-parser';
-import { config, DotenvConfigOutput, DotenvParseOutput } from 'dotenv';
+import { ConfigService } from './config/config.service';
 
 // console.log(process.env.PORT)
-const result: DotenvConfigOutput = config();
-const portConfig = result.parsed as DotenvParseOutput;
-const port: number = +portConfig['PORT'] || 5000;
-const host: string = '127.0.0.1';
-console.log(result)
+// const result: DotenvConfigOutput = config();
+// const portConfig = result.parsed as DotenvParseOutput;
+const port: number = +new ConfigService().get('PORT')
+// const host: string = '127.0.0.1';
+console.log(ConfigService);
 
 const app = express();
 
 const start = async () => {
 	try {
-		app.listen(port, host, () => {
-			console.log(`сервер запущен port ${port}: host ${host}`);
+		app.listen(port, () => {
+			console.log(`сервер запущен port ${port}: host `);
 		});
 	} catch (error) {
 		console.log(error);

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "start": "server ./dist/index.js",
     "dev": "nodemon",
