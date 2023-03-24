@@ -15,6 +15,8 @@
 import express from 'express';
 import cors from 'cors';
 import cookieparser from 'cookie-parser';
+import fs from 'fs'
+import path from 'path'
 import { ConfigService } from './config/config.service';
 
 // console.log(process.env.PORT)
@@ -22,7 +24,7 @@ import { ConfigService } from './config/config.service';
 // const portConfig = result.parsed as DotenvParseOutput;
 const port: number = +new ConfigService().get('PORT')
 // const host: string = '127.0.0.1';
-console.log(ConfigService);
+// console.log(path);
 
 const app = express();
 
@@ -31,6 +33,11 @@ const start = async () => {
 		app.listen(port, () => {
 			console.log(`сервер запущен port ${port}: host `);
 		});
+		app.get('/test', function (req, res, next) {
+			var html = fs.readFileSync('./html/test.html', 'utf8')
+			// res.render('test', { html: html })
+			res.send(html)
+		})
 	} catch (error) {
 		console.log(error);
 	}
