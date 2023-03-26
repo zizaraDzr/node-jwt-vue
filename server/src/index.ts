@@ -18,11 +18,14 @@ import cookieparser from 'cookie-parser';
 import fs from 'fs'
 import path from 'path'
 import { ConfigService } from './config/config.service';
+import mongoose from 'mongoose';
 
 // console.log(process.env.PORT)
 // const result: DotenvConfigOutput = config();
 // const portConfig = result.parsed as DotenvParseOutput;
-const port: number = +new ConfigService().get('PORT')
+const configService = new ConfigService()
+let port = configService.get('PORT')
+let dbUrl: string = configService.get('DB_URL')
 // const host: string = '127.0.0.1';
 // console.log(path);
 console.log(process.pid);
@@ -32,8 +35,10 @@ const app = express();
 
 const start = async () => {
 	try {
+		await mongoose.connect(dbUrl)
+		console.log(`к бд подлючено ${dbUrl} `);
 		app.listen(port, () => {
-			console.log(`сервер запущен port ${port}: host `);
+			console.log(`сервер запущен port ${port} `);
 		});
 		app.get('/test', function (req, res, next) {
 			var html = fs.readFileSync('./html/test.html', 'utf8')
