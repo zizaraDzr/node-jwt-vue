@@ -25,6 +25,8 @@ import { ConfigService } from './config/config.service';
 const port: number = +new ConfigService().get('PORT')
 // const host: string = '127.0.0.1';
 // console.log(path);
+console.log(process.pid);
+
 
 const app = express();
 
