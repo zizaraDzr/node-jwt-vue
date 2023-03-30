@@ -18,6 +18,7 @@ import cookieparser from 'cookie-parser';
 import fs from 'fs'
 import path from 'path'
 import { ConfigService } from './config/config.service';
+import { routers } from './routes/index'
 import mongoose from 'mongoose';
 
 // console.log(process.env.PORT)
@@ -27,11 +28,18 @@ const configService = new ConfigService()
 let port = configService.get('PORT')
 let dbUrl: string = configService.get('DB_URL')
 // const host: string = '127.0.0.1';
-// console.log(path);
-console.log(process.pid);
-
-
+// console.log(path)
 const app = express();
+app.use(express.json())
+app.use(cors())
+app.use(cookieparser())
+
+app.use('/api', routers);
+// определяем Router
+console.log(process.pid);
+// app.use("/products", function (request, response) {
+// 	response.send("Главная страница");
+//   });
 
 const start = async () => {
 	try {
@@ -40,11 +48,11 @@ const start = async () => {
 		app.listen(port, () => {
 			console.log(`сервер запущен port ${port} `);
 		});
-		app.get('/test', function (req, res, next) {
-			var html = fs.readFileSync('./html/test.html', 'utf8')
-			// res.render('test', { html: html })
-			res.send(html)
-		})
+		// app.get('/test', function (req, res, next) {
+		// 	var html = fs.readFileSync('./html/test.html', 'utf8')
+		// 	// res.render('test', { html: html })
+		// 	res.send(html)
+		// })
 	} catch (error) {
 		console.log(error);
 	}
