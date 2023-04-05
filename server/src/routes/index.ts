@@ -1,12 +1,13 @@
 import { Router } from 'express'
-import { userController } from '../controllers/user-controller'
+import userController  from '../controllers/user-controller'
 const router = Router()
+const user = new userController()
 
-router.post('/registration', userController.registration)
-router.post('/login', userController.login)
-router.post('/logout', userController.logout)
-router.get('/activate/:link', userController.activate)
-router.get('/refresh', userController.getRefresh)
-router.get('/users', userController.getUsers)
+router.post('/registration', user.registration)
+router.post('/login', user.login)
+router.post('/logout', user.logout)
+router.get('/activate/:link', user.activate)
+router.get('/refresh', user.getRefresh)
+router.get('/users', user.getUsers)
 
 export const routers = router
