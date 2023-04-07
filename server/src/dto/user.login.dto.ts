@@ -1,4 +1,6 @@
 export class userLoginDto {
-    email: string;
-    password: string
+	email: string;
+	id?: number;
+	isActivated?: boolean;
+	password?: string;
 }

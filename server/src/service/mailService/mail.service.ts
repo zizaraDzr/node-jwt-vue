@@ -1,3 +1,3 @@
 export class MailService {
-    async sendActivationMail(to, link) {}
+    async sendActivationMail(to: any, link: any) {}
 }
