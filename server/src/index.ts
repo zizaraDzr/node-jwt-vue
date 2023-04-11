@@ -18,7 +18,7 @@ import cookieparser from 'cookie-parser';
 import fs from 'fs'
 import path from 'path'
 import { ConfigService } from './config/config.service';
-import { routers } from './routes/index'
+import routers  from './routes/index'
 import mongoose from 'mongoose';
 
 // console.log(process.env.PORT)

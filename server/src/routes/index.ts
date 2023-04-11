@@ -9,4 +9,4 @@ router.get('/activate/:link', user.activate)
 router.get('/refresh', user.getRefresh)
 router.get('/users', user.getUsers)
 
-export const routers = router
+export default router
