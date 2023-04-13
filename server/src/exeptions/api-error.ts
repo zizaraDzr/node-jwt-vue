@@ -1,18 +1,17 @@
 export class HTTPError extends Error {
 	statusCode: number;
-	context?: string;
-	constructor(statusCode: number, message: string, context?: string) {
+	errors: object[];
+	constructor(statusCode: number, message: string, errors: object[] = []) {
 		super(message);
 		this.statusCode = statusCode;
-		this.message = message;
-		this.context = context;
+		this.errors = errors;
 	}
 
     static UnauthorizationError() {
         return new HTTPError(401, 'Пользователь не авторизован')
     }
 
-    static BadRequest(message: string) {
-        return new HTTPError(400, message)
+    static BadRequest(message: string, errors?: object[]) {
+        return new HTTPError(400, message, errors)
     }
 }
