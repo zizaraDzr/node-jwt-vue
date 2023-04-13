@@ -3,4 +3,5 @@ export interface IUserService {
 	registration: (dto: userLoginDto) => Promise<any>;
 	login: (dto: userLoginDto) => Promise<any>;
 	logout: (refreshToken: string) => Promise<any>;
+	getAllUsers: () => Promise<any>;
 }

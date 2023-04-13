@@ -7,7 +7,6 @@ import { MailService } from '../mailService/mail.service';
 import { TokenService } from '../tokenService/token-service';
 import { HTTPError } from '../../exeptions/api-error';
 
-
 const tokenService = new TokenService();
 export class UserSerivece implements IUserService {
 	async registration({ email, password }: any) {
@@ -35,11 +34,11 @@ export class UserSerivece implements IUserService {
 
 	async login({ email, password }: any) {
 		const user = await modelUser.findOne({ email });
-		console.log(user)
+		console.log(user);
 		if (!user) {
 			throw HTTPError.BadRequest(`Неверный email ${email}`);
 		}
-		const isPassEquals:boolean = await compare(password, user.password)
+		const isPassEquals: boolean = await compare(password, user.password);
 		if (!isPassEquals) {
 			throw HTTPError.BadRequest(`не корректный пароль`);
 		}
@@ -56,7 +55,12 @@ export class UserSerivece implements IUserService {
 	}
 
 	async logout(refreshToken: string): Promise<any> {
-		const token = await tokenService.removeToken(refreshToken)
-		return token
+		const token = await tokenService.removeToken(refreshToken);
+		return token;
+	}
+
+	async getAllUsers(): Promise<any> {
+		const users = await modelUser.find();
+		return users;
 	}
 }

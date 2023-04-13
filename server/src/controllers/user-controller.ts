@@ -40,25 +40,28 @@ export default class UserController implements IUserController {
 		try {
 			const { refreshToken } = req.cookies;
 			const token = await userSerivece.logout(refreshToken);
-			res.clearCookie('refreshToken')
-			return res.json(token)
+			res.clearCookie('refreshToken');
+			return res.json(token);
 		} catch (error) {
 			next(error);
 		}
 	}
-	async activate(req: Request, res: Response, next: NextFunction): Promise<void> {
+	async activate(req: Request, res: Response, next: NextFunction): Promise<any> {
 		try {
 		} catch (error) {}
 	}
-	async getRefresh(req: Request, res: Response, next: NextFunction): Promise<void> {
+	async getRefresh(req: Request, res: Response, next: NextFunction): Promise<any> {
 		try {
 		} catch (error) {}
 	}
-	async getUsers(req: Request, res: Response, next: NextFunction): Promise<void> {
-		console.log(4444);
+	async getUsers(req: Request, res: Response, next: NextFunction): Promise<any> {
 		try {
-			res.json(['123', '456']);
-		} catch (error) {}
+			// res.json(['123', '456']);
+			const user = await userSerivece.getAllUsers();
+			return res.json(user);
+		} catch (error) {
+			next(error);
+		}
 	}
 }
 
