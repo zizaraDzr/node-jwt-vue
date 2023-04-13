@@ -20,6 +20,7 @@ import path from 'path'
 import { ConfigService } from './config/config.service';
 import routers  from './routes/index'
 import mongoose from 'mongoose';
+import errorMiddleWate from "./middleware/error-middleware";
 
 // console.log(process.env.PORT)
 // const result: DotenvConfigOutput = config();
@@ -35,6 +36,7 @@ app.use(cors())
 app.use(cookieparser())
 
 app.use('/api', routers);
+app.use(errorMiddleWate);
 // определяем Router
 console.log(process.pid);
 // app.use("/products", function (request, response) {

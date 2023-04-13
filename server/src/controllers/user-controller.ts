@@ -15,7 +15,7 @@ export default class UserController implements IUserController {
 			res.cookie('refreshToken', userData.refreshToken, { maxAge: day30, httpOnly: true });
 			return res.json(userData);
 		} catch (error) {
-			console.log(error);
+			next(error)
 		}
 	}
 	async login(req: Request, res: Response, next: NextFunction): Promise<void> {

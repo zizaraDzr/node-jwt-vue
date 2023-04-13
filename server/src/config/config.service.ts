@@ -1,3 +1,4 @@
+import { HTTPError } from './../exeptions/api-error';
 import { config, DotenvConfigOutput, DotenvParseOutput } from 'dotenv';
 import { IConfigService } from './config.service.interface';
 
@@ -8,7 +9,7 @@ export class ConfigService implements IConfigService {
 		const result: DotenvConfigOutput = config();
 		if (result.error) {
 			// this.logger.error('Не удалось прочитать файл .env');
-			throw new Error('Не удалось прочитать файл .env');
+			throw HTTPError.BadRequest('Не удалось прочитать файл .env');
 		} else {
 			this.config = result.parsed as DotenvParseOutput;
 		}
