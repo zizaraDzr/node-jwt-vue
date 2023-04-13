@@ -16,7 +16,7 @@ export class TokenService {
 		};
 	}
 
-	async saveToken({ userId, refreshToken }: {userId: number, refreshToken: string}) {
+	async saveToken({ userId, refreshToken }: { userId: number; refreshToken: string }) {
 		const tokenData = await modeltoken.findOne({ user: userId });
 		if (tokenData) {
 			tokenData.refreshToken = refreshToken;
@@ -25,5 +25,10 @@ export class TokenService {
 
 		const token = await modeltoken.create({ user: userId, refreshToken });
 		return token;
+	}
+
+	async removeToken(token: string) {
+		const tokenData = await modeltoken.deleteOne({ token });
+		return tokenData;
 	}
 }

@@ -8,21 +8,20 @@ import { HTTPError } from '../exeptions/api-error';
 const userSerivece = new UserSerivece();
 export default class UserController implements IUserController {
 	async registration(req: Request, res: Response, next: NextFunction): Promise<any> {
-
 		try {
-			const errors = validationResult(req)
+			const errors = validationResult(req);
 
 			if (!errors.isEmpty()) {
-				return next(HTTPError.BadRequest('Ошибка при валидации', errors.array()))
+				return next(HTTPError.BadRequest('Ошибка при валидации', errors.array()));
 			}
 			const { email, password } = req.body;
-			console.log(email)
+			console.log(email);
 			const userData = await userSerivece.registration({ email, password });
 			let day30 = 30 * 24 * 60 * 60 * 1000;
 			res.cookie('refreshToken', userData.refreshToken, { maxAge: day30, httpOnly: true });
 			return res.json(userData);
 		} catch (error) {
-			next(error)
+			next(error);
 		}
 	}
 	async login(req: Request, res: Response, next: NextFunction): Promise<any> {
@@ -34,12 +33,18 @@ export default class UserController implements IUserController {
 			res.cookie('refreshToken', userData.refreshToken, { maxAge: day30, httpOnly: true });
 			return res.json(userData);
 		} catch (error) {
-			next(error)
+			next(error);
 		}
 	}
-	async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
+	async logout(req: Request, res: Response, next: NextFunction): Promise<any> {
 		try {
-		} catch (error) {}
+			const { refreshToken } = req.cookies;
+			const token = await userSerivece.logout(refreshToken);
+			res.clearCookie('refreshToken')
+			return res.json(token)
+		} catch (error) {
+			next(error);
+		}
 	}
 	async activate(req: Request, res: Response, next: NextFunction): Promise<void> {
 		try {

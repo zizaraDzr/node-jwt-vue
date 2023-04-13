@@ -32,6 +32,7 @@ export class UserSerivece implements IUserService {
 			user,
 		};
 	}
+
 	async login({ email, password }: any) {
 		const user = await modelUser.findOne({ email });
 		console.log(user)
@@ -52,5 +53,10 @@ export class UserSerivece implements IUserService {
 			...tokens,
 			user,
 		};
+	}
+
+	async logout(refreshToken: string): Promise<any> {
+		const token = await tokenService.removeToken(refreshToken)
+		return token
 	}
 }
