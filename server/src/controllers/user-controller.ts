@@ -48,7 +48,13 @@ export default class UserController implements IUserController {
 	}
 	async getRefresh(req: Request, res: Response, next: NextFunction): Promise<any> {
 		try {
-		} catch (error) {}
+			const { refreshToken } = req.cookies
+			const { email, password } = req.body;
+			const userData = await userSerivece.refresh(refreshToken, email);
+			let day30 = 30 * 24 * 60 * 60 * 1000;
+			res.cookie('refreshToken', userData.refreshToken, { maxAge: day30, httpOnly: true });
+			return res.json(userData);
+		} catch (error) { }
 	}
 	async getUsers(req: Request, res: Response, next: NextFunction): Promise<any> {
 		try {

@@ -1,4 +1,4 @@
-import { sign } from 'jsonwebtoken';
+import { sign, verify, JwtPayload } from 'jsonwebtoken';
 import { ConfigService } from '../../config/config.service';
 import { modeltoken } from '../../models/token-models';
 import { userLoginDto } from '../../dto/user.login.dto';
@@ -15,8 +15,24 @@ export class TokenService {
 			refreshToken,
 		};
 	}
+	validateAccessToken(token: string): string | JwtPayload | null {
+		try {
+			const userData = verify(token, configService.get('JWN_ACCESS_SECRET'))
+			return userData
+		} catch (error) {
+			return null
+		}
+	}
+	validateRefreshToken(token: string) {
+		try {
+			const userData = verify(token, configService.get('JWN_REFRESH_SECRET'))
+			return userData
+		} catch (error) {
+			return null
+		}
+	}
 
-	async saveToken({ userId, refreshToken }: { userId: number; refreshToken: string }) {
+	async saveToken({ userId, refreshToken }: { userId: any; refreshToken: string }) {
 		const tokenData = await modeltoken.findOne({ user: userId });
 		if (tokenData) {
 			tokenData.refreshToken = refreshToken;
@@ -29,6 +45,10 @@ export class TokenService {
 
 	async removeToken(token: string) {
 		const tokenData = await modeltoken.deleteOne({ token });
+		return tokenData;
+	}
+	async findToken(token: string) {
+		const tokenData = await modeltoken.findOne({ token });
 		return tokenData;
 	}
 }

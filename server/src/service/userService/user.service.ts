@@ -3,7 +3,6 @@ import { modelUser } from '../../models/user-models';
 import { compare, hash } from 'bcryptjs';
 import { v4 } from 'uuid';
 import { IUserService } from './users.service.interface';
-import { MailService } from '../mailService/mail.service';
 import { TokenService } from '../tokenService/token-service';
 import { HTTPError } from '../../exeptions/api-error';
 
@@ -17,8 +16,7 @@ export class UserSerivece implements IUserService {
 		const hashPassword = await hash(password as string, 3);
 		const activationLink = v4();
 		const user = await modelUser.create({ email, password: hashPassword, activationLink });
-		// let mailService = new MailService();
-		// await mailService.sendActivationMail(email, activationLink);
+
 		const tokens = tokenService.generateTokens({
 			id: user.id,
 			email: user.email,
@@ -57,6 +55,28 @@ export class UserSerivece implements IUserService {
 	async logout(refreshToken: string): Promise<any> {
 		const token = await tokenService.removeToken(refreshToken);
 		return token;
+	}
+
+	async refresh(refreshToken: string, email: string): Promise<any> {
+		if (!refreshToken) {
+			throw HTTPError.UnauthorizationError()
+		}
+		const userData = tokenService.validateRefreshToken(refreshToken)
+		const tokenFromDb = await tokenService.findToken(refreshToken)
+		if (!userData || !tokenFromDb) {
+			throw HTTPError.UnauthorizationError()
+		}
+		const user = await modelUser.findOne({ email });
+		const userDTO = new userLoginDto(user)
+		const tokens = tokenService.generateTokens({
+			...userDTO
+		});
+		await tokenService.saveToken({ userId: userDTO.id, refreshToken: tokens.refreshToken });
+
+		return {
+			...tokens,
+			user: userDTO,
+		};
 	}
 
 	async getAllUsers(): Promise<any> {
