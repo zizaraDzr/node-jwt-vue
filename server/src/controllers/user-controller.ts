@@ -46,10 +46,6 @@ export default class UserController implements IUserController {
 			next(error);
 		}
 	}
-	async activate(req: Request, res: Response, next: NextFunction): Promise<any> {
-		try {
-		} catch (error) {}
-	}
 	async getRefresh(req: Request, res: Response, next: NextFunction): Promise<any> {
 		try {
 		} catch (error) {}
@@ -65,4 +61,3 @@ export default class UserController implements IUserController {
 	}
 }
 
-// export const userController = new UserController()

@@ -12,7 +12,6 @@ router.post(
 );
 router.post('/login', user.login);
 router.post('/logout', user.logout);
-router.get('/activate/:link', user.activate);
 router.get('/refresh', user.getRefresh);
 router.get('/users', user.getUsers);
 
