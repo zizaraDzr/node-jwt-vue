@@ -67,9 +67,9 @@ export class UserSerivece implements IUserService {
 			throw HTTPError.UnauthorizationError()
 		}
 		const user = await modelUser.findOne({ email });
-		const userDTO = new userLoginDto(user)
+		const userDTO = new userLoginDto()
 		const tokens = tokenService.generateTokens({
-			...userDTO
+			...user
 		});
 		await tokenService.saveToken({ userId: userDTO.id, refreshToken: tokens.refreshToken });
 

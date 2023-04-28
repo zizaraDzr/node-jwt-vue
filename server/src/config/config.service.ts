@@ -18,4 +18,7 @@ export class ConfigService implements IConfigService {
 		return this.config[key];
 	}
 }
+const configService = new ConfigService();
+ 
 
+export default configService
