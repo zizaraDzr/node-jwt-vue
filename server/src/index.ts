@@ -28,11 +28,22 @@ import errorMiddleWate from "./middleware/error-middleware";
 const configService = new ConfigService()
 let port = configService.get('PORT')
 let dbUrl: string = configService.get('DB_URL')
+const whitelist = ['http://localhost:8080'];
+const corsOptions = {
+	credentials: true,
+	origin: (origin: any, callback:any) => {
+	  if (whitelist.indexOf(origin) !== -1 || !origin) {
+		callback(null, true);
+	  } else {
+		callback(new Error('Not allowed by CORS'));
+	  }
+	},
+  };
 // const host: string = '127.0.0.1';
 // console.log(path)
 const app = express();
 app.use(express.json())
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(cookieparser())
 
 app.use('/api', routers);

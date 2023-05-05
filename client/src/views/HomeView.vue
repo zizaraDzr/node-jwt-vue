@@ -1,11 +1,7 @@
 <template>
-	<div class="home">home</div>
+	<div class="home">
+		<h1>This is an about home</h1>
+	</div>
 </template>
 
-<script>
-// @ is an alias to /src
-
-export default {
-	name: 'HomeView',
-};
-</script>
+<script lang="ts"></script>

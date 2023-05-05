@@ -10,25 +10,27 @@
 	</div>
 </template>
 
-<script>
-import axios from 'axios';
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+import UserService from '@/services/userService/user.service';
+import userLoginDto from '@/services/userService/user.dto';
+export default defineComponent({
 	props: {
 		msg: String,
 	},
 	data() {
 		return {
-			users: [],
+			users: [] as userLoginDto[],
 		};
 	},
 	methods: {
-		getListUsers() {
-			axios.get('http://localhost:5000/api/users').then((val) => {
-				this.users.push(...val.data);
+		getListUsers(): void {
+			UserService.getAllUsers().then((val) => {
+				this.users = val.data;
 			});
 		},
 	},
-};
+});
 </script>
 <style>
 #app {
