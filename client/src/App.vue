@@ -1,19 +1,22 @@
 <template>
-	<nav>
+	<!-- <nav>
 		<router-link to="/">Home</router-link> |
 		<router-link to="/about">About</router-link>
-	</nav>
+	</nav> -->
 	<router-view />
-	<button @click="getListUsers">Получить пользователей</button>
+	<!-- <button @click="getListUsers">Получить пользователей</button>
 	<div v-for="user in users" :key="user._id">
 		{{ user.email }}
-	</div>
+	</div> -->
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import UserService from '@/services/userService/user.service';
 import userLoginDto from '@/services/userService/user.dto';
+import AuthService from './services/AuthService/AuthService';
+import { IAuthResponse } from '@/services/AuthService/AuthResponse';
+
 export default defineComponent({
 	props: {
 		msg: String,
@@ -24,10 +27,13 @@ export default defineComponent({
 		};
 	},
 	methods: {
-		getListUsers(): void {
-			UserService.getAllUsers().then((val) => {
-				this.users = val.data;
-			});
+		async getListUsers(): Promise<void> {
+			let res = await UserService.getAllUsers();
+			this.users = res.data;
+		},
+		async authUser(): Promise<IAuthResponse> {
+			let res = await AuthService.login('asd', 'asdasd');
+			return res.data;
 		},
 	},
 });

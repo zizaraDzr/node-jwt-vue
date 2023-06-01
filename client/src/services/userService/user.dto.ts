@@ -3,4 +3,5 @@ export default interface userLoginDto {
 	_id: string;
 	isActivated: boolean;
 	password: string;
+	activationLink: string;
 }

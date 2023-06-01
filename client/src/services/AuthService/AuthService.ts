@@ -1,5 +1,5 @@
 import http from '@/http/axios';
-import { IAuthResponse } from '@/models/response/AuthResponse';
+import { IAuthResponse } from '@/services/AuthService/AuthResponse';
 import { AxiosResponse } from 'axios';
 
 export default class AuthService {

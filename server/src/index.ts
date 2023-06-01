@@ -28,7 +28,7 @@ import errorMiddleWate from "./middleware/error-middleware";
 const configService = new ConfigService()
 let port = configService.get('PORT')
 let dbUrl: string = configService.get('DB_URL')
-const whitelist = ['http://localhost:8080'];
+const whitelist = ['http://localhost:8080', 'http://localhost:8081'];
 const corsOptions = {
 	credentials: true,
 	origin: (origin: any, callback:any) => {
