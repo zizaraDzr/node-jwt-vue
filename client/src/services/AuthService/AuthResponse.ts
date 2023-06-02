@@ -1,6 +1,6 @@
 import { IUser } from '@/services/userService/IUser';
 export interface IAuthResponse {
-	accessToken: string;
+	accesToken: string;
 	refreshToken: string;
 	user: IUser;
 }

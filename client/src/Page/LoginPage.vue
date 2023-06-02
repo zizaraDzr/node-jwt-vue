@@ -4,16 +4,16 @@
 			<div class="modal_content">
 				<form>
 					<div>
-						<input type="text" name="login" id="login" />
+						<input v-model="form.login" type="text" name="login" id="login" />
 						<label for="login">Логин</label>
 					</div>
 					<div>
-						<input type="text" name="password" id="password" />
+						<input v-model="form.pass" type="text" name="password" id="password" />
 						<label for="password">Пароль</label>
 					</div>
 				</form>
 				<div class="center">
-					<button class="btn">
+					<button class="btn" @click="authUser">
 						<svg width="120px" height="40px" viewBox="0 0 120 40" class="border">
 							<polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
 							<polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
@@ -27,10 +27,40 @@
 </template>
 
 <script lang="ts">
+import AuthService from '@/services/AuthService/AuthService';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
 	name: 'login-page',
+	data() {
+		return {
+			form: {
+				login: '', // test@r.ry
+				pass: '', // qwertyqwerty
+			},
+		};
+	},
+	methods: {
+		async authUser(): Promise<void> {
+			const { login, pass } = this.form;
+			try {
+				let res = await AuthService.login(login, pass);
+				console.log(res.data.accesToken);
+				localStorage.setItem('tokenNode', res.data.accesToken);
+				this.$router.push('/');
+				// return res.data;
+			} catch (e: any) {
+				console.log(e.response?.data?.message);
+				// let result = e.message; // error under useUnknownInCatchVariables
+				// if (typeof e === 'string') {
+				// 	e.toUpperCase(); // works, `e` narrowed to string
+				// } else if (e instanceof Error) {
+				// 	e.message; // works, `e` narrowed to Error
+				// 	console.log(e.response?.data?.message);
+				// }
+			}
+		},
+	},
 });
 </script>
 

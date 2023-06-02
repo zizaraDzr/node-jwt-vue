@@ -1,10 +1,41 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import {
+	createRouter,
+	createWebHistory,
+	NavigationGuardNext,
+	RouteLocationNormalized,
+} from 'vue-router';
 import LoginPage from '../Page/LoginPage.vue';
+import Main from '../Page/Main.vue';
 // import about from '../views/AboutView.vue';
+
+// const ifAuthenticated = (
+// 	to: RouteLocationNormalized,
+// 	from: RouteLocationNormalized,
+// 	next: NavigationGuardNext,
+// ) => {
+// 	console.log(42);
+// 	// if (localStorage.getItem('redirect_url')) {
+// 	// 	next('/');
+// 	// }
+// 	return;
+// };
+
+const isAuthenticated = function () {
+	console.log(localStorage.getItem('tokenNode'));
+	if (localStorage.getItem('tokenNode')) {
+		return true;
+	}
+	return false;
+};
 
 const routes = [
 	{
 		path: '/',
+		name: 'main',
+		component: Main,
+	},
+	{
+		path: '/login',
 		name: 'login',
 		component: LoginPage,
 	},
@@ -23,5 +54,15 @@ const router = createRouter({
 	history: createWebHistory(),
 	routes,
 });
+
+// router.beforeEach((to, from, next) => {
+// 	console.log(to);
+// 	console.log(isAuthenticated());
+// 	if (to.name !== 'main' && isAuthenticated()) {
+// 		next({ name: 'main' });
+// 	} else {
+// 		next({ name: 'login' });
+// 	}
+// });
 
 export default router;
