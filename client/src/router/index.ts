@@ -20,24 +20,18 @@ import Main from '../Page/Main.vue';
 // 	return;
 // };
 
-const isAuthenticated = function () {
-	console.log(localStorage.getItem('tokenNode'));
-	if (localStorage.getItem('tokenNode')) {
-		return true;
-	}
-	return false;
-};
-
 const routes = [
 	{
 		path: '/',
 		name: 'main',
 		component: Main,
+		meta: { requiresAuth: true },
 	},
 	{
 		path: '/login',
 		name: 'login',
 		component: LoginPage,
+		meta: { requiresAuth: false },
 	},
 	{
 		path: '/about',
@@ -55,14 +49,19 @@ const router = createRouter({
 	routes,
 });
 
-// router.beforeEach((to, from, next) => {
-// 	console.log(to);
-// 	console.log(isAuthenticated());
-// 	if (to.name !== 'main' && isAuthenticated()) {
-// 		next({ name: 'main' });
-// 	} else {
-// 		next({ name: 'login' });
-// 	}
-// });
+router.beforeEach((to, from, next) => {
+	const isAuthenticated = localStorage.getItem('tokenNode') !== null;
+
+	if (to.meta.requiresAuth && !isAuthenticated) {
+		// Если маршрут требует авторизации, но токен отсутствует, перенаправляем на страницу авторизации
+		next('/login');
+	} else if (!to.meta.requiresAuth && isAuthenticated) {
+		// Если маршрут не требует авторизации, но токен присутствует, перенаправляем на главную страницу
+		next('/');
+	} else {
+		// В остальных случаях просто продолжаем навигацию
+		next();
+	}
+});
 
 export default router;
