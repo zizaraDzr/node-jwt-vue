@@ -28,6 +28,7 @@ export default defineComponent({
 			this.users = res.data;
 		},
 		logOut() {
+			console.log('выйти');
 			localStorage.clear();
 			this.$router.push('/login');
 		},
