@@ -5,6 +5,8 @@
 		<div v-for="user in users" :key="user._id">
 			{{ user.email }}
 		</div>
+
+		<button @click="logOut">Выйти</button>
 	</div>
 </template>
 
@@ -24,6 +26,10 @@ export default defineComponent({
 		async getListUsers(): Promise<void> {
 			let res = await UserService.getAllUsers();
 			this.users = res.data;
+		},
+		logOut() {
+			localStorage.clear();
+			this.$router.push('/login');
 		},
 	},
 });
