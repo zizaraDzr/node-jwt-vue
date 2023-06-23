@@ -3,10 +3,9 @@ import { modelUser } from '../../models/user-models';
 import { compare, hash } from 'bcryptjs';
 import { v4 } from 'uuid';
 import { IUserService } from './users.service.interface';
-import { TokenService } from '../tokenService/token-service';
+import tokenService  from '../tokenService/token-service';
 import { HTTPError } from '../../exeptions/api-error';
 
-const tokenService = new TokenService();
 export class UserSerivece implements IUserService {
 	async registration({ email, password }: any) {
 		const candidate = await modelUser.findOne({ email });

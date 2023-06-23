@@ -6,7 +6,7 @@ import { validationResult } from 'express-validator';
 import { HTTPError } from '../exeptions/api-error';
 
 const userSerivece = new UserSerivece();
-export default class UserController implements IUserController {
+class UserController implements IUserController {
 	async registration(req: Request, res: Response, next: NextFunction): Promise<any> {
 		try {
 			const errors = validationResult(req);
@@ -67,3 +67,4 @@ export default class UserController implements IUserController {
 	}
 }
 
+export default new UserController();

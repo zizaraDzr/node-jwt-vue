@@ -1,9 +1,9 @@
 import { sign, verify, JwtPayload } from 'jsonwebtoken';
 import configService from '../../config/config.service';
 import { modeltoken } from '../../models/token-models';
-import { userLoginDto } from '../../dto/user.login.dto';
+import { ITokenService } from './token.servise.interface';
 // const configService = new ConfigService();
-export class TokenService {
+class TokenService implements ITokenService{
 	generateTokens(payload: any) {
 		const accesToken = sign(payload, configService.get('JWN_ACCESS_SECRET'), { expiresIn: '30m' });
 		const refreshToken = sign(payload, configService.get('JWN_REFRESH_SECRET'), {
@@ -23,7 +23,7 @@ export class TokenService {
 			return null
 		}
 	}
-	validateRefreshToken(token: string) {
+	validateRefreshToken(token: string): string | JwtPayload | null {
 		try {
 			const userData = verify(token, configService.get('JWN_REFRESH_SECRET'))
 			return userData
@@ -52,3 +52,5 @@ export class TokenService {
 		return tokenData;
 	}
 }
+
+export default new TokenService();

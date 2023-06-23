@@ -1,18 +1,20 @@
+import { JwtPayload } from 'jsonwebtoken';
 import { Router } from 'express';
 import userController from '../controllers/user-controller';
 import { body } from 'express-validator';
+import { authMiddleware, CustomRequest } from '../middleware/auth-middleware';
+import { Request, NextFunction, Response } from 'express';
 
 const router = Router();
-const user = new userController();
 router.post(
 	'/registration',
 	body('email').isEmail(),
 	body('password').isLength({ min: 3, max: 32 }),
-	user.registration,
+	userController.registration,
 );
-router.post('/login', user.login);
-router.post('/logout', user.logout);
-router.get('/refresh', user.getRefresh);
-router.get('/users', user.getUsers);
+router.post('/login', userController.login);
+router.post('/logout', userController.logout);
+router.get('/refresh', userController.getRefresh);
+router.get('/users', authMiddleware, userController.getUsers);
 
 export default router;

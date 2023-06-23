@@ -22,6 +22,10 @@
 					</button>
 				</div>
 			</div>
+			<button @click="getListUsers">Получить пользователей</button>
+		</div>
+		<div v-for="user in users" :key="user._id">
+			{{ user.email }}
 		</div>
 	</div>
 </template>
@@ -29,6 +33,8 @@
 <script lang="ts">
 import AuthService from '@/services/AuthService/AuthService';
 import { defineComponent } from 'vue';
+import userLoginDto from '@/services/userService/user.dto';
+import UserService from '@/services/userService/user.service';
 
 export default defineComponent({
 	name: 'login-page',
@@ -38,6 +44,7 @@ export default defineComponent({
 				login: '', // test@r.ry
 				pass: '', // qwertyqwerty
 			},
+			users: [] as userLoginDto[],
 		};
 	},
 	methods: {
@@ -59,6 +66,10 @@ export default defineComponent({
 				// 	console.log(e.response?.data?.message);
 				// }
 			}
+		},
+		async getListUsers(): Promise<void> {
+			let res = await UserService.getAllUsers();
+			this.users = res.data;
 		},
 	},
 });
