@@ -3,8 +3,10 @@ import TokenService from './../service/tokenService/token-service';
 import { HTTPError } from './../exeptions/api-error';
 import { Request, NextFunction, Response } from 'express';
 
-export interface CustomRequest extends Request {
-    user: string | JwtPayload | null;
+declare module 'express' {
+    interface Request {
+      user?: string | JwtPayload | null;
+    }
   }
 export function authMiddleware (req: Request, res: Response, next: NextFunction) {
     try {
@@ -18,7 +20,7 @@ export function authMiddleware (req: Request, res: Response, next: NextFunction)
             return next(HTTPError.UnauthorizationError());
         }
 
-        // req.user = userData
+        req.user = userData
         next()
     } catch (error) {
         return next(HTTPError.UnauthorizationError());
