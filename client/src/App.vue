@@ -4,16 +4,10 @@
 		<router-link to="/about">About</router-link>
 	</nav> -->
 	<router-view />
-	<!-- <button @click="getListUsers">Получить пользователей</button>
-	<div v-for="user in users" :key="user._id">
-		{{ user.email }}
-	</div> -->
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import UserService from '@/services/userService/user.service';
-import userLoginDto from '@/services/userService/user.dto';
 import AuthService from './services/AuthService/AuthService';
 import { IAuthResponse } from '@/services/AuthService/AuthResponse';
 
@@ -22,15 +16,9 @@ export default defineComponent({
 		msg: String,
 	},
 	data() {
-		return {
-			users: [] as userLoginDto[],
-		};
+		return {};
 	},
 	methods: {
-		async getListUsers(): Promise<void> {
-			let res = await UserService.getAllUsers();
-			this.users = res.data;
-		},
 		async authUser(): Promise<IAuthResponse> {
 			let res = await AuthService.login('asd', 'asdasd');
 			return res.data;

@@ -101,7 +101,7 @@ input {
 
 label {
 	color: #555454;
-	transform: translateY(60px);
+	transform: scale(1.1) translateY(13px) translateX(-42%);
 	transform-origin: left top;
 	cursor: text;
 	transition: all 0.7s;
